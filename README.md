@@ -29,11 +29,11 @@ El sistema permite:
 servidor = ServidorCorreo()
 
 ## Crear usuarios
-usuario1 = Usuario("Damian", "damian@gmail.com")
+usuario1 = Usuario("Damian", "damian@gmail.com")\
 usuario2 = Usuario("Victoria", "victoria@gmail.com")
 
 ## Registrar los usuarios en el servidor
-servidor.registrar_usuario(usuario1)
+servidor.registrar_usuario(usuario1)\
 servidor.registrar_usuario(usuario2)
 
 ## Crear mensaje de Damián para Victoria
@@ -43,8 +43,13 @@ msj = Mensaje("damian@gmail.com", "victoria@gmail.com", "Entrega TP Estructuras 
 servidor.enviar_mensaje(msj, "victoria@gmail.com")
 
 ## Listar asuntos de los mensajes recibidos por Victoria
-print(servidor.listar_mensajes("victoria@gmail.com"))
-## ["Entrega TP Estructuras de Datos"]
+print(servidor.listar_mensajes("victoria@gmail.com"))\
+["Entrega TP Estructuras de Datos"]
+
+-----------
+# Integrantes:
+- ## Damián Larrascq
+- ## Victoria Ocampo
 
 -----------
 # Diagrama UML:
