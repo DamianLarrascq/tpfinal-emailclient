@@ -25,6 +25,17 @@ class Usuario:
         self.__raiz_carpetas.agregar_subcarpeta(self.__inbox)
         self.__raiz_carpetas.agregar_subcarpeta(self.__sent)
 
+    @property
+    def correo(self):
+        """
+        Getter para el correo del usuario
+
+        :return: String con correo del usuario
+        """
+        return self.__correo
+
+    # Métodos carpetas
+
     def agregar_carpeta(self, nombre_carpeta, nombre_carpeta_raiz='raiz'):
         """
         Agrega una neuva carpeta al usuario bajo la carpeta padre especificada.
@@ -75,6 +86,38 @@ class Usuario:
         """
         return self._obtener_carpeta_recursiva(self.__raiz_carpetas, nombre_carpeta)
 
+    def _obtener_carpeta_padre_recursiva(self, carpeta_actual, carpeta_hijo):
+
+        for subcarpeta in carpeta_actual.subcarpetas:
+            if subcarpeta.nombre == carpeta_hijo:
+                return carpeta_actual
+
+            resultado = self._obtener_carpeta_padre_recursiva(subcarpeta, carpeta_hijo)
+            if resultado:
+                return resultado
+
+        return None
+
+    def mover_carpeta(self, carpeta, destino):
+        carpeta = self.obtener_carpeta(carpeta)
+        destino = self.obtener_carpeta(destino)
+
+        if not carpeta or carpeta.nombre in ['raiz', 'inbox', 'sent']:
+            raise ValueError('No se encontro la carpeta o es una carpeta protegida')
+
+        if not destino:
+            raise ValueError('Carpeta destino no encontrada')
+
+        padre_actual = self._obtener_carpeta_padre_recursiva(self.__raiz_carpetas, carpeta)
+
+        if not padre_actual:
+            raise ValueError('No se encontro carpeta padre')
+
+        padre_actual.eliminar_subcarpeta(carpeta)
+        destino.agregar_subcarpeta(carpeta)
+
+    # Métodos mensajes
+
     def buscar_mensaje(self, termino_busqueda, campo=None):
         """
         Delega la búsqueda recursiva de mensajes a la carpeta raíz del usuario.
@@ -85,14 +128,6 @@ class Usuario:
         """
         return self.__raiz_carpetas.buscar_mensaje(termino_busqueda, campo)
 
-    @property
-    def correo(self):
-        """
-        Getter para el correo del usuario
-
-        :return: String con correo del usuario
-        """
-        return self.__correo
 
     def recibir_mensaje(self, mensaje):
         """
@@ -109,3 +144,21 @@ class Usuario:
         :param mensaje: Instancia de Mensaje a almacenar
         """
         self.__sent.agregar_mensaje(mensaje)
+
+    def mover_mensaje(self, mensaje, origen, destino):
+
+        origen = self.obtener_carpeta(origen)
+        destino = self.obtener_carpeta(destino)
+
+        if not origen:
+            raise ValueError('Carpeta de origen no encontrada')
+
+        if not destino:
+            raise ValueError('Carpeta de destino no encontrada')
+
+        try:
+            origen.eliminar_mensaje(mensaje)
+            destino.agregar_mensaje(mensaje)
+
+        except:
+            raise ValueError('No se pudo mover el mensaje')

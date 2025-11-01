@@ -16,6 +16,21 @@ class Carpeta:
         self.__subcarpetas = []
         self.__padre = padre
 
+    @property
+    def nombre(self):
+        """
+        Getter de nombre de la carpeta
+
+        :return: String con nombre de la carpeta
+        """
+        return self.__nombre
+
+    # Métodos subcarpetas
+
+    @property
+    def subcarpetas(self):
+        return self.__subcarpetas
+
     def agregar_subcarpeta(self, carpeta):
         """
         Agrega una isntancia de Carpeta como subcarpeta,
@@ -29,22 +44,6 @@ class Carpeta:
         else:
             raise TypeError('Solo se pueden agregar objetos Carpeta como subcarpeta')
 
-    def agregar_mensaje(self, mensaje):
-        """
-        Agrega un mensaje a la carpeta
-
-        :param mensaje: Instancia de Mensaje
-        """
-        self.__mensajes.append(mensaje)
-
-    def obtener_mensajes(self):
-        """
-        Devuelve todos los mensajes almacenados en la carpeta
-
-        :return: Lista de instancias de Mensaje
-        """
-        return self.__mensajes
-
     def obtener_subcarpeta(self, nombre):
         """
         Busca y devuelve una subcarpeta directamente por nombre.
@@ -56,6 +55,32 @@ class Carpeta:
             if sub.nombre == nombre:
                 return sub
         return None
+
+    def eliminar_subcarpeta(self, carpeta):
+        try:
+            self.__subcarpetas.remove(carpeta)
+            return 'Subcarpeta eliminada con exito'
+        except ValueError:
+            return 'Error al eliminar subcarpeta'
+
+    # Métodos mensajes
+
+    @property
+    def obtener_mensajes(self):
+        """
+        Devuelve todos los mensajes almacenados en la carpeta
+
+        :return: Lista de instancias de Mensaje
+        """
+        return self.__mensajes
+
+    def agregar_mensaje(self, mensaje):
+        """
+        Agrega un mensaje a la carpeta
+
+        :param mensaje: Instancia de Mensaje
+        """
+        self.__mensajes.append(mensaje)
 
     def _buscar_mensaje_recursivo(self, termino_busqueda, campo=None):
         """
@@ -99,15 +124,9 @@ class Carpeta:
         """
         return self._buscar_mensaje_recursivo(termino_busqueda, campo)
 
-    @property
-    def nombre(self):
-        """
-        Getter de nombre de la carpeta
-
-        :return: String con nombre de la carpeta
-        """
-        return self.__nombre
-
-    @property
-    def subcarpetas(self):
-        return self.__subcarpetas
+    def eliminar_mensaje(self, mensaje):
+        try:
+            self.__mensajes.remove(mensaje)
+            return 'Mensaje eliminado con exito'
+        except ValueError:
+            return 'Error al eliminar mensaje'
