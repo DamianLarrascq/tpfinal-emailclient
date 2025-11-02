@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+from cola_prioridad import ColaPrioridad
 
 class InterfazCorreo(ABC):
     """
@@ -74,6 +74,7 @@ class ServidorCorreo(InterfazCorreo):
         Value: Instancia de Usuario
         """
         self.__usuarios = {}
+        self.__cola_prioridad = ColaPrioridad()
 
     @property
     def usuarios(self):
@@ -103,6 +104,12 @@ class ServidorCorreo(InterfazCorreo):
         :param email_destinatario: Correo del destinatario
         :raises ValueError: Si el destinatario o remitente no están registrados
         """
+
+        # se agrega mensaje a la cola de prioridades si esta marcado como 1 (prioridad alta)
+        if mensaje.prioridad == 1:
+            self.__cola_prioridad.encolar(mensaje)
+
+        # continua normalmente con el envio del mensaje
         if email_destinatario not in self.__usuarios:
             raise ValueError('Destinatario no encontrado')
 
@@ -150,3 +157,5 @@ class ServidorCorreo(InterfazCorreo):
         usuario = self.__usuarios[email_usuario]
 
         return usuario.buscar_mensaje(termino_busqueda, campo)
+
+

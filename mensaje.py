@@ -8,7 +8,7 @@ class Mensaje:
     - Asunto
     - Cuerpo
     """
-    def __init__(self, remitente, destinatario, asunto, cuerpo):
+    def __init__(self, remitente, destinatario, asunto, cuerpo, prioridad = 2):
         """
         Inicializa un mensaje con remitente, destinatario, asunto, cuerpo
 
@@ -16,11 +16,13 @@ class Mensaje:
         :param destinatario: Dirección de correo del destinatario
         :param asunto: Asunto del mensaje
         :param cuerpo: Cuerpo del mensaje
+        :param prioridad=2: Nivel de prioridad del mensaje: 1 (alta) y 2 (normal)
         """
         self.__remitente = remitente
         self.__destinatario = destinatario
         self.__asunto = asunto
         self.__cuerpo = cuerpo
+        self.__prioridad = prioridad
 
     @property
     def remitente(self):
@@ -57,3 +59,13 @@ class Mensaje:
         :return: String del cuerpo del mensaje
         """
         return self.__cuerpo
+
+    @property
+    def prioridad(self):
+        return self.__prioridad
+
+    def __lt__(self, other):
+        """
+        Compara prioridad de mensajes en la Cola
+        """
+        return self.prioridad < other.prioridad

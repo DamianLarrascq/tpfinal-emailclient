@@ -131,7 +131,9 @@ class Usuario:
             if subcarpeta.nombre == carpeta_hijo:
                 return carpeta_actual
 
+        for subcarpeta in carpeta_actual.subcarpetas:
             resultado = self._obtener_carpeta_padre_recursiva(subcarpeta, carpeta_hijo)
+
             if resultado:
                 return resultado
 
@@ -147,7 +149,7 @@ class Usuario:
         if not destino:
             raise ValueError('Carpeta destino no encontrada')
 
-        padre_actual = self._obtener_carpeta_padre_recursiva(self.__raiz_carpetas, carpeta)
+        padre_actual = self._obtener_carpeta_padre_recursiva(self.__raiz_carpetas, carpeta.nombre)
 
         if not padre_actual:
             raise ValueError('No se encontro carpeta padre')
