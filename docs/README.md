@@ -62,6 +62,6 @@ print(f"Mensajes encontrados por remitente: {[m.asunto for m in resultados_remit
 -----------
 # Diagrama UML:
 
-![Diagrama](docs/UML.png)
+![Diagrama](UML.png)
 
 
