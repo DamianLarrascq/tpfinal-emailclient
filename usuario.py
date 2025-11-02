@@ -24,6 +24,7 @@ class Usuario:
         self.__sent = Carpeta('sent')
         self.__raiz_carpetas.agregar_subcarpeta(self.__inbox)
         self.__raiz_carpetas.agregar_subcarpeta(self.__sent)
+        self.__filtros = {}
 
     @property
     def correo(self):
@@ -33,6 +34,44 @@ class Usuario:
         :return: String con correo del usuario
         """
         return self.__correo
+
+    # Métodos filtros
+
+    def definir_filtro(self, nombre_filtro, campo, valor, carpeta_destino):
+
+        if campo not in ['remitente', 'asunto']:
+            raise ValueError('Campo debe ser "remitente" o "asunto"')
+
+        if not self.obtener_carpeta(carpeta_destino):
+            raise ValueError('Carpeta de destino no encontrada')
+
+        self.__filtros[nombre_filtro]= {
+            'campo': campo,
+            'valor': valor.lower(),
+            'destino': carpeta_destino
+        }
+
+    def aplicar_filtros(self, mensaje):
+
+        mensaje_movido = False
+
+        for nombre_filtro, regla in self.__filtros.items():
+
+            campo_mensaje = None
+            if regla['campo'] == 'remitente':
+                campo_mensaje = mensaje.remitente.lower()
+            elif regla['campo'] == 'asunto':
+                campo_mensaje = mensaje.asunto.lower()
+
+            if campo_mensaje and regla['valor'] in campo_mensaje:
+
+                carpeta_destino = self.obtener_carpeta(regla['destino'])
+                carpeta_destino.agregar_mensaje(mensaje)
+                mensaje_movido = True
+
+                break
+
+        return mensaje_movido
 
     # Métodos carpetas
 
@@ -92,7 +131,9 @@ class Usuario:
             if subcarpeta.nombre == carpeta_hijo:
                 return carpeta_actual
 
+        for subcarpeta in carpeta_actual.subcarpetas:
             resultado = self._obtener_carpeta_padre_recursiva(subcarpeta, carpeta_hijo)
+
             if resultado:
                 return resultado
 
@@ -108,7 +149,7 @@ class Usuario:
         if not destino:
             raise ValueError('Carpeta destino no encontrada')
 
-        padre_actual = self._obtener_carpeta_padre_recursiva(self.__raiz_carpetas, carpeta)
+        padre_actual = self._obtener_carpeta_padre_recursiva(self.__raiz_carpetas, carpeta.nombre)
 
         if not padre_actual:
             raise ValueError('No se encontro carpeta padre')

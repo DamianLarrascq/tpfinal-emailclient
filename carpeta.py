@@ -61,7 +61,7 @@ class Carpeta:
             self.__subcarpetas.remove(carpeta)
             return 'Subcarpeta eliminada con exito'
         except ValueError:
-            return 'Error al eliminar subcarpeta'
+            raise ValueError('Error al eliminar subcarpeta')
 
     # Métodos mensajes
 
@@ -129,4 +129,4 @@ class Carpeta:
             self.__mensajes.remove(mensaje)
             return 'Mensaje eliminado con exito'
         except ValueError:
-            return 'Error al eliminar mensaje'
+            raise ValueError('Error al eliminar mensaje')
