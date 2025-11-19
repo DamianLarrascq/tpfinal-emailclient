@@ -1,5 +1,9 @@
 from abc import ABC, abstractmethod
-from cola_prioridad import ColaPrioridad
+from typing import List, Dict
+
+from data_structures.cola_prioridad import ColaPrioridad
+from usuario import Usuario
+
 
 class InterfazCorreo(ABC):
     """
@@ -66,15 +70,21 @@ class ServidorCorreo(InterfazCorreo):
     - Almacena copias en las carpetas correspondientes
     """
 
-    def __init__(self):
+    def __init__(self, nombre):
         """
         Inicializa el servidor con un diccionario vacío de usuarios
 
         Key: Correo del usuario
         Value: Instancia de Usuario
         """
-        self.__usuarios = {}
-        self.__cola_prioridad = ColaPrioridad()
+        self.__nombre: str = nombre
+        self.__usuarios: Dict[str, Usuario] = {}
+        self.__conexiones: List[ServidorCorreo] = []
+        self.__cola_prioridad: ColaPrioridad = ColaPrioridad()
+
+    @property
+    def nombre(self) -> str:
+        return self.__nombre
 
     @property
     def usuarios(self):
