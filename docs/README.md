@@ -46,14 +46,22 @@ servidor.enviar_mensaje(msj, "victoria@gmail.com")
 print(servidor.listar_mensajes("victoria@gmail.com"))\
 ["Entrega TP Estructuras de Datos"]
 
+## Buscar el mensaje en las carpetas de Victoria
+resultados = servidor.buscar_mensaje("victoria@gmail.com", "Entrega")
+print(f"Mensajes encontrados: {[m.asunto for m in resultados]}")
+# Mensajes encontrados: ['Entrega TP Estructuras de Datos']
+
+## Buscar por remitente
+resultados_remitente = servidor.buscar_mensaje("victoria@gmail.com", "damian", campo="remitente")
+print(f"Mensajes encontrados por remitente: {[m.asunto for m in resultados_remitente]}")
+# Mensajes encontrados por remitente: ['Entrega TP Estructuras de Datos']
+
 -----------
 # Integrantes:
 - ## Damián Larrascq
-- ## Victoria Ocampo
-
 -----------
 # Diagrama UML:
 
-[Diagrama de Clases --.pdf](https://github.com/user-attachments/files/22435820/Diagrama.de.Clases.--.pdf)
+![Diagrama](UML.png)
 
 
