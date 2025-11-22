@@ -58,6 +58,11 @@ class ArbolCarpetas:
         if carpeta_actual is None:
             carpeta_actual = self.raiz
 
+        indentacion = ' ' * nivel
+        cantidad_mensajes = len(carpeta_actual.obtener_mensajes)
+
+        print(f'{indentacion}[{carpeta_actual.nombre}] ({cantidad_mensajes} mensajes)')
+
         for subcarpeta in carpeta_actual.subcarpetas:
             self.listar_carpetas_recursivo(subcarpeta, nivel + 1)
 

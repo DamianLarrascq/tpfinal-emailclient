@@ -45,7 +45,7 @@ class GestorCarpetas:
     def listar_carpetas(self, usuario):
 
         arbol = ArbolCarpetas(usuario.raiz)
-        arbol.listar_carpetas_recursivo()
+        arbol.listar_carpetas_recursivo(usuario.raiz)
 
     def obtener_arbol_carpetas(self, usuario):
 

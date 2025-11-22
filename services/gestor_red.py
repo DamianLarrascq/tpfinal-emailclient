@@ -15,7 +15,7 @@ class GestorRed:
         nombre1 = servidor1.nombre if hasattr(servidor1, 'nombre') else servidor1
         nombre2 = servidor2.nombre if hasattr(servidor2, 'nombre') else servidor2
 
-        resultado = self.grafo.conectar_servidor(nombre1, nombre2, peso)
+        resultado = self.grafo.conectar_servidores(nombre1, nombre2, peso)
         return resultado
 
     def enviar_mensaje_red(self, mensaje, servidor_origen, servidor_destino):
@@ -23,13 +23,15 @@ class GestorRed:
         ruta = self.encontrar_mejor_ruta(servidor_origen, servidor_destino)
 
         if not ruta:
-            raise ValueError('Ruta no disponible')
+            return False
 
         if isinstance(servidor_destino, str):
-            servidor_destino = self.grafo.__servidores.get(servidor_destino)
+            servidor_obj = self.grafo.obtener_servidor(servidor_destino)
+        else:
+            servidor_obj = servidor_destino
 
-        if servidor_destino:
-            return servidor_destino.recibir_mensaje_local(mensaje)
+        if servidor_obj:
+            return servidor_obj.recibir_mensaje_local(mensaje)
         else:
             return False
 

@@ -38,3 +38,34 @@ class ColaPrioridad:
 
     def esta_vacia(self):
         return self.cabeza is None
+
+    def eliminar_mensaje(self, mensaje_a_eliminar):
+
+        actual = self.cabeza
+        anterior = None
+
+        if actual is not None and actual.mensaje is mensaje_a_eliminar:
+            self.cabeza = actual.siguiente
+            return True
+
+        while actual is not None and actual.mensaje is not mensaje_a_eliminar:
+            anterior = actual
+            actual = actual.siguiente
+
+        if actual is not None:
+            anterior.siguiente = actual.siguiente
+            return True
+
+        return False
+
+    def cambiar_prioridad(self, mensaje, nueva_prioridad):
+        eliminado = self.eliminar_mensaje(mensaje)
+
+        if not eliminado:
+            return False
+
+        mensaje.cambiar_prioridad(nueva_prioridad)
+
+        self.encolar(mensaje)
+
+        return True

@@ -18,7 +18,10 @@ class Mensaje:
         :param destinatario: Dirección de correo del destinatario
         :param asunto: Asunto del mensaje
         :param cuerpo: Cuerpo del mensaje
+        :param fecha: Fecha del mensaje
         :param prioridad=2: Nivel de prioridad del mensaje: 1 (alta) y 2 (normal)
+        :param leido: Booleano indicando si el mensaje fue leido
+        :param etiquetas: Lista de etiquetas del mensaje
         """
         self.__remitente = remitente
         self.__destinatario = destinatario
@@ -77,6 +80,10 @@ class Mensaje:
     def leido(self):
         return self.__leido
 
+    @property
+    def etiquetas(self):
+        return self.__etiquetas
+
     def marcar_como_leido(self):
         self.__leido = True
 
@@ -85,7 +92,8 @@ class Mensaje:
             self.__etiquetas.append(etiqueta)
 
     def cambiar_prioridad(self, nueva_prioridad):
-        self.__prioridad = nueva_prioridad
+        if nueva_prioridad in [1,2]:
+            self.__prioridad = nueva_prioridad
 
     def __lt__(self, other):
         """

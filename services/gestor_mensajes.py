@@ -17,17 +17,12 @@ class GestorMensajes:
         except IndexError:
             return False
 
-        servidor_origen = None
-
-        for servidor in self.gestor_red.grafo.__servidores.values():
-            if servidor.dominio == dominio_origen:
-                servidor_origen = servidor
-                break
+        servidor_origen = self.gestor_red.grafo.obtener_servidor(dominio_origen)
 
         if not servidor_origen:
             return False
 
-        envio_gestor = self.gestor_red.enviar_mensaje_red(nuevo_mensaje, servidor_origen, destinatario)
+        envio_gestor = self.gestor_red.enviar_mensaje_red(nuevo_mensaje, servidor_origen, dominio_destino)
 
         if envio_gestor:
             remitente.enviar_mensaje(nuevo_mensaje)
@@ -84,3 +79,24 @@ class GestorMensajes:
                 return resultado
 
         return None
+
+    def obtener_estadisticas_usuario(self, usuario):
+
+        recibidos = len(usuario.inbox.obtener_mensajes)
+        enviados = len(usuario.sent.obtener_mensajes)
+        pendientes = sum(1 for mensaje in usuario.inbox.obtener_mensajes if not mensaje.leido)
+
+        return {
+            'recibidos': recibidos,
+            'enviados': enviados,
+            'pendientes': pendientes
+        }
+
+    def cambiar_prioridad_mensaje(self, mensaje, nueva_prioridad):
+
+        try:
+            prioridad = int(nueva_prioridad)
+            mensaje.cambiar_prioridad(prioridad)
+            return True
+        except ValueError:
+            return False
