@@ -1,4 +1,4 @@
-from uuid import uuid4
+import uuid
 
 
 class GestorFiltros:
@@ -6,11 +6,24 @@ class GestorFiltros:
     def __init__(self, gestor_carpetas):
         self.gestor_carpetas = gestor_carpetas
 
-    def agregar_filtro(self, usuario, filtro):
+    def crear_filtro(self, usuario, nombre, criterio, valor, accion, destino=None):
+
+        nuevo_filtro = {
+            'id': str(uuid.uuid4())[:8],
+            'nombre': nombre,
+            'criterio': criterio,
+            'valor': valor,
+            'accion': accion,
+            'destino': destino
+        }
+
+        return self.agregar_filtro(usuario, nuevo_filtro, nuevo_filtro['id'])
+
+    def agregar_filtro(self, usuario, filtro, id_filtro):
 
         if self.validar_filtro(filtro):
             if 'id' not in filtro:
-                filtro['id'] = str(uuid4())
+                filtro['id'] = str(id_filtro)
 
             usuario.agregar_filtro(filtro)
             return True
@@ -51,19 +64,18 @@ class GestorFiltros:
                 continue
 
             coincidencia = False
+            criterio = regla['criterio']
             valor_buscado = regla['valor']
 
-            if regla['criterio'] == 'remitente':
-                if valor_buscado in mensaje.asunto.lower():
-                    coincidencia = True
+            if criterio == 'etiqueta':
+                coincidencia = valor_buscado in mensaje.etiquetas
 
-            elif regla['criterio'] == 'asunto':
-                if valor_buscado in mensaje.asunto.lower():
-                    coincidencia = True
-
-            elif regla['criterio'] == 'cuerpo':
-                if valor_buscado in mensaje.asunto.lower():
-                    coincidencia = True
+            elif criterio in ['remitente', 'asunto', 'cuerpo']:
+                try:
+                    campo_mensaje = getattr(mensaje, criterio)
+                    coincidencia = valor_buscado.lower() in campo_mensaje.lower()
+                except AttributeError:
+                    coincidencia = False
 
             if coincidencia:
                 accion = regla['accion']
@@ -80,6 +92,13 @@ class GestorFiltros:
                         if resultado:
                             mensaje_movido = True
 
+                elif accion == 'prioridad':
+                    try:
+                        nueva_prioridad = int(valor_buscado)
+                        mensaje.cambiar_prioridad(nueva_prioridad)
+                    except ValueError:
+                        pass
+
     def listar_filtros(self, usuario):
 
         filtros = usuario.filtros
@@ -87,7 +106,15 @@ class GestorFiltros:
         if not filtros:
             raise ValueError('No hay filtros configurados')
         else:
-            return filtros
+            print('--- Filtros activos ---')
+            for i, filtro in enumerate(filtros):
+                nombre = filtro.get('nombre')
+                filtro_id = filtro['id']
+                accion = filtro['accion']
+                criterio = filtro['criterio']
+                valor = filtro['valor']
+
+                print('ID: ' + filtro_id + '\nNombre: ' + nombre + '\nAccion: ' + accion + '\nCriterio: ' + criterio + '\nValor: ' + valor)
 
     def eliminar_filtro(self, usuario, id_filtro):
 
@@ -102,7 +129,7 @@ class GestorFiltros:
 
     def validar_filtro(self, filtro):
 
-        criterios_validos = ['remitente', 'asunto', 'cuerpo']
+        criterios_validos = ['remitente', 'asunto', 'cuerpo', 'etiqueta']
         acciones_validas = ['mover', 'leer', 'prioridad']
 
         if not all(key in filtro for key in ('criterio', 'valor', 'accion')):

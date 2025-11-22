@@ -1,4 +1,4 @@
-from carpeta import Carpeta
+from models.carpeta import Carpeta
 
 class Usuario:
     """
@@ -56,6 +56,18 @@ class Usuario:
     @property
     def filtros(self):
         return self.__filtros
+
+    def obtener_carpeta(self, nombre_carpeta):
+        if nombre_carpeta == "inbox":
+            return self.__inbox
+        elif nombre_carpeta == "sent":
+            return self.__sent
+        elif nombre_carpeta == "papelera":
+            return self.__papelera
+        elif nombre_carpeta == "raiz":
+            return self.__raiz_carpetas
+        else:
+            return self.__raiz_carpetas.obtener_subcarpeta(nombre_carpeta)
 
     def recibir_mensaje(self, mensaje):
         """

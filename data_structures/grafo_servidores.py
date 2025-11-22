@@ -159,3 +159,9 @@ class GrafoServidores:
                     visitados_globales.add(nodo)
 
         return componentes
+
+    def obtener_servidor(self, nombre_servidor):
+        return self.__servidores.get(nombre_servidor)
+
+    def obtener_todos_servidores(self):
+        return list(self.__servidores.values())

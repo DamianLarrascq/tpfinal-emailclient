@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
 from data_structures.cola_prioridad import ColaPrioridad
-from usuario import Usuario
+from models.usuario import Usuario
 
 
 class InterfazCorreo(ABC):
@@ -143,7 +143,16 @@ class ServidorCorreo(InterfazCorreo):
         :return: Lista de strings con los asuntos de los mensajes
         """
         usuario = self.__usuarios[email_usuario]
-        return usuario.obtener_carpeta('inbox').obtener_mensajes()
+        return usuario.obtener_carpeta('inbox').obtener_mensajes
+
+    def recibir_mensaje_local(self, mensaje):
+
+        if mensaje.destinatario in self.__usuarios:
+            usuario = self.__usuarios[mensaje.destinatario]
+            usuario.recibir_mensaje(mensaje)
+            return True
+
+        return False
 
     def listar_mensajes(self, usuario):
         """
