@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Mensaje:
     """
     Representa un mensaje de correo
@@ -22,7 +24,10 @@ class Mensaje:
         self.__destinatario = destinatario
         self.__asunto = asunto
         self.__cuerpo = cuerpo
+        self.__fecha = datetime.now()
         self.__prioridad = prioridad
+        self.__leido = False
+        self.__etiquetas = []
 
     @property
     def remitente(self):
@@ -61,8 +66,26 @@ class Mensaje:
         return self.__cuerpo
 
     @property
+    def fecha(self):
+        return self.__fecha
+
+    @property
     def prioridad(self):
         return self.__prioridad
+
+    @property
+    def leido(self):
+        return self.__leido
+
+    def marcar_como_leido(self):
+        self.__leido = True
+
+    def agregar_etiqueta(self, etiqueta):
+        if etiqueta not in self.__etiquetas:
+            self.__etiquetas.append(etiqueta)
+
+    def cambiar_prioridad(self, nueva_prioridad):
+        self.__prioridad = nueva_prioridad
 
     def __lt__(self, other):
         """

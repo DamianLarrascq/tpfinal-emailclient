@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import List, Dict
-
 from data_structures.cola_prioridad import ColaPrioridad
 from usuario import Usuario
 
@@ -57,6 +56,10 @@ class InterfazCorreo(ABC):
         :param campo: Campo de búsqueda ('asunto' o 'remitente'). Si es None busca en ambos
         :return: Lista de instancias de Mensaje que contienen el término
         """
+        pass
+
+    @abstractmethod
+    def conectar_servidor(self, servidor):
         pass
 
 
@@ -168,4 +171,9 @@ class ServidorCorreo(InterfazCorreo):
 
         return usuario.buscar_mensaje(termino_busqueda, campo)
 
+    def conectar_servidor(self, servidor):
 
+        if servidor in self.__conexiones:
+            raise ValueError('Servidor ya conectado')
+        else:
+            self.__conexiones.append(servidor)
