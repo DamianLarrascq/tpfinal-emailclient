@@ -1,25 +1,66 @@
-# Trabajo Final para la Cátedra: Estructuras de Datos en Python (Comisión 3)
+# Cliente de Correo Electrónico - Proyecto Final ED
+## Descripción
+Sistema de gestión de correo electrónico implementado en Python utilizando
+estructuras de datos avanzadas y algoritmos eficientes. El proyecto modela un
+cliente de correo completo con gestión de usuarios, mensajes, carpetas
+recursivas, filtros automáticos y una red distribuida de servidores.
+## Integrantes del Grupo
+- **Damián Larrascq - damian.larrascq@gmail.com
+-----------
+## Tecnologías Utilizadas
+- **Lenguaje**: Python 3.10+
+- **Estructuras de Datos**:
+ - Árboles Generales (gestión de carpetas)
+ - Colas de Prioridad (mensajes urgentes)
+ - Grafos (red de servidores)
+- **Algoritmos**:
+ - Recursividad (búsquedas en árbol)
+ - BFS/DFS (enrutamiento de mensajes)
+- **Testing**: pytest
+- **Control de Versiones**: Git/GitHub
+-----------
 
-Este proyecto implementa un sistema de correo electrónico orientado a objetos en Python.
+## Características Principales
+### ✉ Gestión de Mensajes
+- Envío y recepción de mensajes
+- Mensajes con prioridades (1-2)
+- Etiquetado y categorización
+- Búsqueda avanzada
+### 📁 Sistema de Carpetas
+- Estructura jerárquica de carpetas (árbol general)
+- Subcarpetas ilimitadas
+- Búsqueda recursiva de mensajes
+- Movimiento de mensajes entre carpetas
+### 🔍 Filtros Automáticos
+- Creación de reglas de filtrado
+- Aplicación automática a mensajes entrantes
+- Múltiples criterios (remitente, asunto, palabras clave)
+### 🚀 Mensajes Urgentes
+- Cola de prioridades para mensajes importantes
+- Procesamiento preferencial
+- Notificaciones especiales
+### 🌐 Red de Servidores
+- Grafo de servidores interconectados
+- Enrutamiento inteligente con BFS/DFS
+- Simulación de envío entre dominios
 
 -----------
-# Objetivo
 
-El sistema permite:
-- Registrar usuarios en un servidor de correo
-- Enviar y recibir mensajes entre usuarios registrados
-- Guardar copias de los mensajes enviados en la carpeta "sent", y recibidos en "inbox"
-- Listar los asuntos de los mensajes recibidos
-
------------
-
-# Clases principales
-
-- InterfazCorreo: Interfaz abstracta que define los métodos esenciales de un servidor de correo electrónico
-- ServidorCorreo: Administra usuarios y gestiona el envío, recepción y listado de mensajes
-- Usuario: Representa a un usuario con un correo único y sus carpetas
-- Mensaje: Modela un mensaje con remitente, destinatario, asunto y cuerpo
-- Carpeta: Almacena mensajes de un usuario en "inbox" y "sent"
+## Instalación
+### Requisitos Previos
+- Python 3.10 o superior
+- pip (gestor de paquetes de Python)
+- Git
+### Pasos de Instalación
+1. Clonar el repositorio:
+git clone https://github.com/DamianLarrascq/tpfinal-emailclient.git
+2. Crear entorno virtual (recomendado):
+python -m venv venv
+source venv/bin/activate # En Windows: venv\Scripts\activate
+3. Instalar dependencias:
+pip install -r requirements.txt
+4. Verificar instalación:
+python -m pytest tests/
 
 -----------
 
@@ -57,11 +98,8 @@ print(f"Mensajes encontrados por remitente: {[m.asunto for m in resultados_remit
 # Mensajes encontrados por remitente: ['Entrega TP Estructuras de Datos']
 
 -----------
-# Integrantes:
-- ## Damián Larrascq
------------
-# Diagrama UML:
+# Documentación:
 
-![Diagrama](UML.png)
+![Diagramas](diagramas)
 
 
