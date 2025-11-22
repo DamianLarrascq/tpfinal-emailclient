@@ -1,7 +1,8 @@
 import unittest
-from usuario import Usuario
-from mensaje import Mensaje
-from cola_prioridad import ColaPrioridad, Nodo
+from models.usuario import Usuario
+from models.mensaje import Mensaje
+from data_structures.cola_prioridad import ColaPrioridad
+
 
 class TestRecursividad(unittest.TestCase):
 

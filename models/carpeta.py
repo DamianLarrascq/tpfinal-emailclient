@@ -28,6 +28,10 @@ class Carpeta:
     # Métodos subcarpetas
 
     @property
+    def padre(self):
+        return self.__padre
+
+    @property
     def subcarpetas(self):
         return self.__subcarpetas
 
